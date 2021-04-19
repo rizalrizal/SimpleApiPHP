@@ -1,5 +1,5 @@
 <?php
-include "koneksi.php";
+require_once "koneksi.php";
 class Mahasiswa 
 {
 
@@ -7,12 +7,17 @@ class Mahasiswa
 	{
 		global $mysqli;
 		$query="SELECT * FROM tbl_mahasiswa";
-		$response=array();
+		$data=array();
 		$result=$mysqli->query($query);
 		while($row=mysqli_fetch_object($result))
 		{
-			$response[]=$row;
+			$data[]=$row;
 		}
+		$response=array(
+							'status' => 1,
+							'message' =>'Get List Mahasiswa Successfully.',
+							'data' => $data
+						);
 		header('Content-Type: application/json');
 		echo json_encode($response);
 	}
@@ -25,12 +30,17 @@ class Mahasiswa
 		{
 			$query.=" WHERE id=".$id." LIMIT 1";
 		}
-		$response=array();
+		$data=array();
 		$result=$mysqli->query($query);
 		while($row=mysqli_fetch_object($result))
 		{
-			$response[]=$row;
+			$data[]=$row;
 		}
+		$response=array(
+							'status' => 1,
+							'message' =>'Get Mahasiswa Successfully.',
+							'data' => $data
+						);
 		header('Content-Type: application/json');
 		echo json_encode($response);
 		 
@@ -41,7 +51,7 @@ class Mahasiswa
 			global $mysqli;
 			$arrcheckpost = array('nim' => '', 'nama' => '', 'jk' => '', 'alamat' => '', 'jurusan'   => '');
 			$hitung = count(array_intersect_key($_POST, $arrcheckpost));
-			if($hitung == 5){
+			if($hitung == count($arrcheckpost)){
 			
 					$result = mysqli_query($mysqli, "INSERT INTO tbl_mahasiswa SET
 					nim = '$_POST[nim]',
@@ -54,20 +64,20 @@ class Mahasiswa
 					{
 						$response=array(
 							'status' => 1,
-							'status_message' =>'Mahasiswa Added Successfully.'
+							'message' =>'Mahasiswa Added Successfully.'
 						);
 					}
 					else
 					{
 						$response=array(
 							'status' => 0,
-							'status_message' =>'Mahasiswa Addition Failed.'
+							'message' =>'Mahasiswa Addition Failed.'
 						);
 					}
 			}else{
 				$response=array(
 							'status' => 0,
-							'status_message' =>'Mahasiswa Addition Failed.'
+							'message' =>'Parameter Do Not Match'
 						);
 			}
 			header('Content-Type: application/json');
@@ -77,29 +87,37 @@ class Mahasiswa
 	function update_mhs($id)
 		{
 			global $mysqli;
-			parse_str(file_get_contents("php://input"),$post_vars);
+			$arrcheckpost = array('nim' => '', 'nama' => '', 'jk' => '', 'alamat' => '', 'jurusan'   => '');
+			$hitung = count(array_intersect_key($_POST, $arrcheckpost));
+			if($hitung == count($arrcheckpost)){
 			
 		        $result = mysqli_query($mysqli, "UPDATE tbl_mahasiswa SET
-		        nim = '$post_vars[nim]',
-		        nama = '$post_vars[nama]',
-		        jk = '$post_vars[jk]',
-		        alamat = '$post_vars[alamat]',
-		        jurusan = '$post_vars[jurusan]'
+		        nim = '$_POST[nim]',
+		        nama = '$_POST[nama]',
+		        jk = '$_POST[jk]',
+		        alamat = '$_POST[alamat]',
+		        jurusan = '$_POST[jurusan]'
 		        WHERE id='$id'");
 		   
-			if($result)
-			{
+				if($result)
+				{
+					$response=array(
+						'status' => 1,
+						'message' =>'Mahasiswa Updated Successfully.'
+					);
+				}
+				else
+				{
+					$response=array(
+						'status' => 0,
+						'message' =>'Mahasiswa Updation Failed.'
+					);
+				}
+			}else{
 				$response=array(
-					'status' => 1,
-					'status_message' =>'Mahasiswa Updated Successfully.'
-				);
-			}
-			else
-			{
-				$response=array(
-					'status' => 0,
-					'status_message' =>'Mahasiswa Updation Failed.'
-				);
+							'status' => 0,
+							'message' =>'Parameter Do Not Match'
+						);
 			}
 			header('Content-Type: application/json');
 			echo json_encode($response);
@@ -113,14 +131,14 @@ class Mahasiswa
 		{
 			$response=array(
 				'status' => 1,
-				'status_message' =>'Mahasiswa Deleted Successfully.'
+				'message' =>'Mahasiswa Deleted Successfully.'
 			);
 		}
 		else
 		{
 			$response=array(
 				'status' => 0,
-				'status_message' =>'Mahasiswa Deletion Failed.'
+				'message' =>'Mahasiswa Deletion Failed.'
 			);
 		}
 		header('Content-Type: application/json');

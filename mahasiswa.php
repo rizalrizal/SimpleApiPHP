@@ -1,5 +1,5 @@
 <?php
-include "method.php";
+require_once "method.php";
 $mhs = new Mahasiswa();
 $request_method=$_SERVER["REQUEST_METHOD"];
 switch ($request_method) {
@@ -15,12 +15,16 @@ switch ($request_method) {
 			}
 			break;
 	case 'POST':
-			$mhs->insert_mhs();
+			if(!empty($_GET["id"]))
+			{
+				$id=intval($_GET["id"]);
+				$mhs->update_mhs($id);
+			}
+			else
+			{
+				$mhs->insert_mhs();
+			}		
 			break; 
-	case 'PUT':
-			$id=intval($_GET["id"]);
-			$mhs->update_mhs($id);
-			break;
 	case 'DELETE':
 		    $id=intval($_GET["id"]);
             $mhs->delete_mhs($id);

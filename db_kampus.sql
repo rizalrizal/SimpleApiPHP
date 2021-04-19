@@ -34,7 +34,7 @@ CREATE TABLE `tbl_mahasiswa` (
 
 insert  into `tbl_mahasiswa`(`id`,`nim`,`nama`,`jk`,`alamat`,`jurusan`) values 
 (1,'15119999','muhammad al fatih','L','Jl. P. Puger 2 No 19','Informatika'),
-(2,'16119212','Fatimah','P','Jl. Ringin Raya','Sistem Indormasi');
+(2,'16119212','Fatimah','P','Jl. Ringin Raya','Sistem Informasi');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
