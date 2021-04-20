@@ -28,7 +28,7 @@ CREATE TABLE `tbl_mahasiswa` (
   `alamat` text,
   `jurusan` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 /*Data for the table `tbl_mahasiswa` */
 
